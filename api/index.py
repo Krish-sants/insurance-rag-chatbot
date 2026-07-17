@@ -1,6 +1,6 @@
 """FastAPI surface for the insurance RAG chatbot.
 
-Run:  .venv\\Scripts\\python -m uvicorn api:app --reload --port 8020
+Run:  .venv\\Scripts\\python -m uvicorn api.index:app --reload --port 8020
 UI:   http://127.0.0.1:8020/        Docs: http://127.0.0.1:8020/docs
 
 The `role` field simulates the SSO entitlement claims from the system
@@ -18,7 +18,7 @@ from app.graph import ask
 
 app = FastAPI(title="Acme Mutual — Agent Knowledge Assistant", version="1.0.0")
 
-_INDEX_HTML = (Path(__file__).parent / "ui" / "index.html").read_text(encoding="utf-8")
+_INDEX_HTML = (Path(__file__).resolve().parent.parent / "ui" / "index.html").read_text(encoding="utf-8")
 
 
 class ChatRequest(BaseModel):

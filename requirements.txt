@@ -4,6 +4,3 @@ langgraph
 llama-index-core
 llama-index-retrievers-bm25
 fastapi
-uvicorn[standard]
-pytest
-httpx

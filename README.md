@@ -18,8 +18,8 @@ Each framework plays its natural role:
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-.venv\Scripts\python -m uvicorn api:app --port 8020
+.venv\Scripts\pip install -r requirements-dev.txt
+.venv\Scripts\python -m uvicorn api.index:app --port 8020
 # open http://127.0.0.1:8020  (chat UI with role switcher + sample queries)
 .venv\Scripts\python -m pytest tests -q          # 12 tests
 ```
@@ -64,6 +64,14 @@ commercial-auto HNOA endorsement, water-damage claims procedure,
 high-value-homes underwriting guideline (underwriter-only ACL), and a
 flood FAQ — chosen so every design behavior (jurisdiction, version, ACL,
 endorsement expansion, comparison) is demonstrable.
+
+## Live demo
+
+**https://insurance-rag-chatbot-mauve.vercel.app** — deployed on Vercel
+serverless (`api/index.py` ASGI entry, `vercel.json` rewrites). Use the
+role switcher to see ACL security trimming change the answers, and the
+sample chips to exercise jurisdiction filtering, endorsement co-retrieval,
+and the injection guardrail.
 
 ## Scaling path
 
