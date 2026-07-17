@@ -22,7 +22,7 @@ _INDEX_HTML = (Path(__file__).resolve().parent.parent / "ui" / "index.html").rea
 
 
 class ChatRequest(BaseModel):
-    question: str = Field(..., min_length=3, max_length=2000)
+    question: str = Field(..., min_length=1, max_length=2000)
     role: Literal["agent_personal", "agent_commercial", "claims", "underwriter"] = "agent_personal"
     licensed_states: list[str] = ["TX"]
 

@@ -68,8 +68,25 @@ def screen(state: ChatState) -> ChatState:
     return state
 
 
+GREETING = re.compile(
+    r"^\s*(hi|hii+|hello|hey|yo|good\s+(morning|afternoon|evening)|thanks?|thank\s+you)[\s!.,]*$",
+    re.I)
+
+
 def understand(state: ChatState) -> ChatState:
     q = state["question"].lower()
+
+    if GREETING.match(state["question"]):
+        state["outcome"] = "greeting"
+        state["answer"] = (
+            "Hello! I answer questions from Acme Mutual's governed documents — "
+            "policy forms, endorsements, claims procedures, underwriting "
+            "guidelines and FAQs. Try asking things like:\n"
+            "- What exclusions apply to homeowners policies in Texas?\n"
+            "- What documents are required for a water damage claim?\n"
+            "- Summarize the cancellation conditions for a Texas homeowners policy.")
+        _note(state, "understand", "greeting -> capabilities reply, no retrieval")
+        return state
 
     state["state_filter"] = None
     for name, code in STATE_NAMES.items():
@@ -205,7 +222,7 @@ def _after_screen(state: ChatState) -> str:
 
 
 def _after_understand(state: ChatState) -> str:
-    return "end" if state.get("outcome") == "clarify" else "retrieve"
+    return "end" if state.get("outcome") in ("clarify", "greeting") else "retrieve"
 
 
 def _after_retrieve(state: ChatState) -> str:

@@ -95,8 +95,13 @@ document.getElementById('f').addEventListener('submit', async (e) => {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ question:q, role, licensed_states: roles[role] }),
     });
+    if (!r.ok) {
+      const err = await r.json().catch(() => null);
+      const msg = Array.isArray(err?.detail) ? err.detail[0]?.msg : (err?.detail || r.statusText);
+      throw new Error(msg || `request failed (${r.status})`);
+    }
     const d = await r.json();
-    thinking.textContent = d.outcome === 'clarify' ? d.clarification : d.answer;
+    thinking.textContent = (d.outcome === 'clarify' ? d.clarification : d.answer) || 'No response.';
     const badge = d.confidence ? `<span class="badge ${d.confidence}">${d.confidence} confidence</span>` : '';
     document.getElementById('detail').innerHTML = `
       <div style="margin-bottom:.4rem">outcome: <b>${d.outcome}</b> ${badge}
